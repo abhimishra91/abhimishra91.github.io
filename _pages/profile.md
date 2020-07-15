@@ -1,6 +1,6 @@
 ---
-permalink: /about/
-title: "About"
+permalink: /profile/
+title: "My Profile"
 author_profile: true
 comments: true
 ---
