@@ -12,7 +12,7 @@
 
 # theme                  : "minimal-mistakes-jekyll"
 # remote_theme           : "mmistakes/minimal-mistakes"
-minimal_mistakes_skin    : "default" # "air", "aqua", "contrast", "dark", "dirt", "neon", "mint", "plum", "sunrise"
+minimal_mistakes_skin    : "mint" # "default" # "air", "aqua", "contrast", "dark", "dirt", "neon", "mint", "plum", "sunrise"
 
 # Site Settings
 locale                   : "en-US"
@@ -122,7 +122,7 @@ footer:
       icon: "fas fa-fw fa-link"
       url: "https://abhimishra91.github.io/"
     - label: "LinkedIn"
-      icon: "fab fa-fw fa-linkedin-square"
+      icon: "fab fa-fw fa-linkedin"
       url: "https://www.linkedin.com/in/abhishek-kumar-mishra-116b2554/"
     - label: "Facebook"
       icon: "fab fa-fw fa-facebook-square"
@@ -135,7 +135,7 @@ footer:
       # url:
     - label: "GitHub"
       icon: "fab fa-fw fa-github"
-      # url:
+      url: "https://github.com/abhimishra91"
     - label: "GitLab"
       icon: "fab fa-fw fa-gitlab"
       # url:
