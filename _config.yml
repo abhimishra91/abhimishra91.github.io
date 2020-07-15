@@ -99,14 +99,11 @@ author:
   location         : "Singapore"
   email            : "abhimishra.91@gmail.com"
   links:
-    - label: "Email"
-      icon: "fas fa-fw fa-envelope-square"
-      url: "mailto:abhimishra.91@gmail.com"
     - label: "Website"
       icon: "fas fa-fw fa-link"
       url: "https://abhimishra91.github.io/"
     - label: "LinkedIn"
-      icon: "fab fa-fw fa-linkedin-square"
+      icon: "fab fa-fw fa-linkedin"
       url: "https://www.linkedin.com/in/abhishek-kumar-mishra-116b2554/"
     - label: "Facebook"
       icon: "fab fa-fw fa-facebook-square"
@@ -121,9 +118,6 @@ author:
 # Site Footer
 footer:
   links:
-    - label: "Email"
-      icon: "fas fa-fw fa-envelope-square"
-      url: "mailto:abhimishra.91@gmail.com"
     - label: "Website"
       icon: "fas fa-fw fa-link"
       url: "https://abhimishra91.github.io/"
