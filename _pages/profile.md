@@ -1,6 +1,7 @@
 ---
 permalink: /profile/
 title: "My Profile"
+layout: single
 author_profile: true
 comments: true
 ---
