@@ -94,7 +94,7 @@ analytics:
 # Site Author
 author:
   name             : "Abhishek Kumar Mishra"
-  avatar           : # path of avatar image, e.g. "/assets/images/bio-photo.jpg"
+  avatar           : "/assets/images/myself.jpg"
   bio              : "Dont Forget to be Awesome"
   location         : "Singapore"
   email            : "abhimishra.91@gmail.com"
