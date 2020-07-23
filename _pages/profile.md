@@ -1,6 +1,6 @@
 ---
 permalink: /index.html/
-title: "About Me"
+title: ""
 layout: single
 author_profile: true
 comments: true
