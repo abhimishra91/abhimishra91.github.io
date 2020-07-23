@@ -1,7 +1,7 @@
 # main links
 main:
   - title: "Profile"
-    url: /profile/
+    url: /index.html/
   - title: "Projects"
     url: /projects/
   # - title: "Sample Posts"
