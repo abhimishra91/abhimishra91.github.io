@@ -1,11 +1,11 @@
 ---
 permalink: /index.html/
-title: ""
+title: "Hi there, I am Abhishek (Abby)"
 layout: single
 author_profile: true
 comments: true
 ---
-### Hi there, I am Abhishek (Abby). A Product Manager by work and NLP Practioner, Manga Reader by passion. 👋
+### A Product Manager by work and NLP Practioner, Manga Reader by passion. 👋
 #### Learning and working on Projects to keep myself updated with the latest in domain of NLP and Cognitive Services.
 
 My core professional responsibilities are to identify and execute on opportunities to streamline business processes and enhancing core products by leveraging on new technologies and innovation such as Machine Learning, Cloud Native and RPA.
