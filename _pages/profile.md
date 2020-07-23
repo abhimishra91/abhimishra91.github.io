@@ -5,11 +5,10 @@ layout: single
 author_profile: true
 comments: true
 ---
-
 ### Hi there, I am Abhishek (Abby). A Product Manager by work and NLP Practioner, Manga Reader by passion. 👋
 #### Learning and working on Projects to keep myself updated with the latest in domain of NLP and Cognitive Services.
 
-I am a knowledgeable professional skilled in programming, business analysis and project management. A data science practitioner working on opportunities to streamline business processes and enhancing core products by leveraging on new technologies and innovation such as Machine Learning, Cloud Native and RPA.
+My core professional responsibilities are to identify and execute on opportunities to streamline business processes and enhancing core products by leveraging on new technologies and innovation such as Machine Learning, Cloud Native and RPA.
 
 Prior experience as a Project Manager and Client Relationship Manager for trade processing projects.
 
