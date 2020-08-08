@@ -18,7 +18,7 @@ minimal_mistakes_skin    : "mint" # "air", "aqua", "contrast", "dark", "dirt", "
 locale                   : "en-US"
 title                    : "Abhishek Kumar Mishra"
 title_separator          : "-"
-subtitle                 : Digital Transformation | Natural Language Processing Practitioner | Data Science | Product Management.
+subtitle                 : 
 name                     : "Abhishek Kumar Mishra"
 description              : "Eat, Sleep, Pray and Code"
 url                      : "https://abhimishra91.github.io/"
@@ -26,7 +26,7 @@ baseurl                  : # the subpath of your site, e.g. "/blog"
 repository               : "https://github.com/abhimishra91"
 teaser                   : # path of fallback teaser image, e.g. "/assets/images/500x300.png"
 logo                     : # path of logo image to display in the masthead, e.g. "/assets/images/88x88.png"
-masthead_title           : "Abhishek Kumar Mishra"
+masthead_title           : "Eat, Sleep, Pray and Code"
 # breadcrumbs            : false # true, false (default)
 words_per_minute         : 200
 comments:
@@ -95,7 +95,7 @@ analytics:
 author:
   name             : "Abhishek Kumar Mishra"
   avatar           : "/assets/images/myself.jpg"
-  bio              : "Dont Forget to be Awesome"
+  bio              : "Digital Transformation | Natural Language Processing Practitioner | Data Science | Product Management."
   location         : "Singapore"
   email            : "abhimishra.91@gmail.com"
   links:
