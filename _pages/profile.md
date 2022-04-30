@@ -5,16 +5,22 @@ layout: single
 author_profile: true
 comments: true
 ---
-### A Product Manager by work and NLP Practioner, Manga Reader by passion. 👋
-#### Learning and working on Projects to keep myself updated with the latest in domain of NLP and Cognitive Services.
+### I am Senior Data Scientist based out of Singapore with a passion for problem solving and leveraging technology to add value. 👋
+#### Outside coding i enjoy Reading Manga and Cooking. 
+#### Learning and working on Projects to keep myself updated with the latest in domain of Machine Learning and Natural Language Processing.
 
-My core professional responsibilities are to identify and execute on opportunities to streamline business processes and enhancing core products by leveraging on new technologies and innovation such as Machine Learning, Cloud Native and RPA.
+As part of my current role as a Senior Data Scientist i spend time working with Data at peta-byte scale to identify patterns, generate predictions, recommendations and next best actions to enhance cusotmer experince and enhance the business value of our services offered to clients.
+
+My prior role gave me experince to identify and execute on opportunities to streamline business processes and enhancing core products by leveraging on new technologies and innovation such as Machine Learning, Cloud Native and RPA.
 
 Prior experience as a Project Manager and Client Relationship Manager for trade processing projects.
 
 Some Quick Bytes:
-
-- 🔭 I’m currently working on ...NLP Projects such as:
+- 👷 Sr Data Scientist
+  * Product Recommendation framework for Millions of Customers. **_Peta-Byte Data_**, **_Distributed Compute: Spark, Ray_**, **_Transformers_**
+  * Fraud Detection and Anti Phishing Solution for real time transaction screening and validation. **_Stream Processing_**, **_Deep Learning_**
+  * Investment Strategy developed using Alternative Data and Machine Learning
+- 🔭 In my free time I’m currently working on ...NLP Projects such as:
   * [Transformer Tutorials](https://github.com/abhimishra91/transformers-tutorials): Notebooks to fine tune Transformers
   * [Project Insight](https://github.com/abhimishra91/insight): **NLP as a Service**
 - 🌱 I’m currently improving on ...C, Python: FastAI, Pytorch, TensorFlow, Streamlit, FastAPI, Transformers
