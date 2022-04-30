@@ -5,7 +5,7 @@ layout: single
 author_profile: true
 comments: true
 ---
-### I am Senior Data Scientist based out of Singapore with a passion for problem solving and leveraging technology to add value. 👋
+### I am Senior Data Scientist based out of Singapore with a passion for problem solving and leveraging technology to add Buisness value. 👋
 #### Outside coding i enjoy Reading Manga and Cooking. 
 #### Learning and working on Projects to keep myself updated with the latest in domain of Machine Learning and Natural Language Processing.
 
