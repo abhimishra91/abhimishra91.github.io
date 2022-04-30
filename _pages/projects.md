@@ -6,4 +6,4 @@ author_profile: true
 comments: true
 ---
 
-This is my Project Page
+This page contains links to the projects that have done over the course of my professional carrer.
