@@ -2,7 +2,7 @@
 permalink: /prj_email/
 title: "Email Classification"
 header: 
-    image: /assets/images/nlp-unsplash.jpg
+    image: /assets/images/nlp2-unsplash.jpg
     caption: "Photo credit: [**Unsplash**](https://unsplash.com)"
 layout: single
 author_profile: true
