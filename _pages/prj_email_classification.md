@@ -1,6 +1,6 @@
 ---
 permalink: /prj_email/
-title: "Email Classification"
+title: "Email Classification with Deep Learning"
 header: 
     overlay_image: /assets/images/nlp2-unsplash.jpg
     caption: "Photo credit: [**Unsplash**](https://unsplash.com)"
