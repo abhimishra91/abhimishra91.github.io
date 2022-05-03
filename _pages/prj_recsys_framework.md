@@ -1,5 +1,5 @@
 ---
-permalink: 
+permalink: /prj_recsys/
 title: "Recommendation System Framework"
 header: 
     image: /assets/images/recsys-unsplash.jpg
