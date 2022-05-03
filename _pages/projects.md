@@ -8,7 +8,7 @@ comments: true
 
 This page contains links to the projects that have done over the course of my professional carrer.
 
-My Projects are as follows: 
+My Projects are as follows:
 
 1. [Email Classification with Deep Learning](/prj_email/)
 

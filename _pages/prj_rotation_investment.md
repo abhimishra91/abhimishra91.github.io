@@ -2,8 +2,9 @@
 permalink: /prj_investment/
 title: "Rotation Investment Stratergy with Machine Learning"
 header: 
-    image: /assets/images/inv-unsplash.jpg
+    overlay_image: /assets/images/inv-unsplash.jpg
     caption: "Photo credit: [**Unsplash**](https://unsplash.com)"
+excerpt: Alternative Data and Gradient Boosting Model to develop a robust Investment Stratergy.
 layout: single
 author_profile: true
 comments: true

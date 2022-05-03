@@ -2,8 +2,9 @@
 permalink: /prj_recsys/
 title: "Recommendation System Framework"
 header: 
-    image: /assets/images/recsys-unsplash.jpg
+    overlay_image: /assets/images/recsys-unsplash.jpg
     caption: "Photo credit: [**Unsplash**](https://unsplash.com)"
+excerpt: An End to End Scalable Recommendation System Framework.
 layout: single
 author_profile: true
 comments: true
