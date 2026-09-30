@@ -4,6 +4,20 @@ import Icon from '../components/Icon.astro';
 ---
 
 <Base title="404 — Page not found">
+  <!--
+    GitHub Pages serves this page for any unknown URL. Send links from the old
+    Jekyll site (e.g. /index.html/, which its nav used for the profile) to their new home
+    before anything renders. It can't be a redirect page: /index.html is the homepage file.
+  -->
+  <script is:inline slot="head">
+    (function () {
+      var legacy = { '/index.html/': '/', '/profile/': '/', '/projects.html': '/#work' };
+      var path = location.pathname.replace(/\/+$/, '/');
+      if (!/\/$/.test(path) && !/\.[a-z]+$/i.test(path)) path += '/';
+      var to = legacy[path] || (/^\/index\.html\/.+/.test(path) ? '/' : null);
+      if (to) location.replace(to + (to.indexOf('#') < 0 ? location.hash : ''));
+    })();
+  </script>
   <section class="container nf">
     <p class="mono code">error 404 · route not found</p>
     <h1>This node isn't in the graph.</h1>
