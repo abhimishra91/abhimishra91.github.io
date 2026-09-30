@@ -1,0 +1,231 @@
+---
+import { Image } from 'astro:assets';
+import portrait from '../assets/portrait.jpg';
+import Icon from './Icon.astro';
+import type { Props as IconProps } from './Icon.astro';
+import SectionHead from './SectionHead.astro';
+import { site, beyond } from '../data/profile';
+---
+
+<section class="section" id="about" aria-labelledby="about-title">
+  <div class="container">
+    <SectionHead id="about-title" eyebrow="About" title="Beyond the résumé." />
+    <div class="about">
+      <figure class="portrait" data-reveal>
+        <div class="frame">
+          <Image src={portrait} alt={`${site.name}`} width={480} height={480} />
+          <span class="scan" aria-hidden="true"></span>
+          <span class="corner tl" aria-hidden="true"></span>
+          <span class="corner br" aria-hidden="true"></span>
+        </div>
+        <figcaption class="mono">
+          <span>{site.name}</span>
+          <span class="loc"><Icon name="pin" size={13} /> {site.location}</span>
+        </figcaption>
+      </figure>
+
+      <div class="about-body">
+        <div class="bio" data-reveal>
+          <p>
+            I'm Abhishek — an engineer who ended up leading teams, and still likes to be close to the code. My path started in
+            operations automation at IHS Markit, where an NLP email classifier ended up saving 18 hours of manual work every day.
+          </p>
+          <p>
+            That set the pattern for everything since: find a real problem, build the system, and make it hold up in production — through
+            analytics products for financial clients, fraud and personalisation models at a bank, and today AI platforms and agentic
+            systems at Collinson.
+          </p>
+        </div>
+
+        <p class="motto mono" data-reveal>“{beyond.motto}”</p>
+
+        <ul class="interests">
+          {
+            beyond.interests.map((it, i) => (
+              <li class="panel spotlight" data-reveal style={`--delay: ${i * 70}ms`}>
+                <Icon name={it.icon as IconProps['name']} size={20} />
+                <h3>{it.title}</h3>
+                <p>{it.text}</p>
+              </li>
+            ))
+          }
+        </ul>
+
+        <div class="creds" data-reveal>
+          <div class="cred">
+            <Icon name="cap" size={20} />
+            <div>
+              <p class="cred-title">{beyond.education.degree}</p>
+              <p class="cred-sub">{beyond.education.school} · {beyond.education.period}</p>
+            </div>
+          </div>
+          {
+            beyond.certifications.map((c) => (
+              <div class="cred">
+                <Icon name="award" size={20} />
+                <div>
+                  <p class="cred-title">{c}</p>
+                  <p class="cred-sub">Certification</p>
+                </div>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .about {
+    display: grid;
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+    gap: clamp(32px, 5vw, 72px);
+    align-items: start;
+  }
+  .portrait {
+    margin: 0;
+    position: sticky;
+    top: 110px;
+  }
+  .frame {
+    position: relative;
+    border-radius: var(--radius);
+    overflow: hidden;
+    border: 1px solid var(--border-strong);
+    box-shadow: var(--shadow);
+  }
+  .frame :global(img) {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1;
+    object-fit: cover;
+    filter: saturate(0.9) contrast(1.05);
+  }
+  .frame::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(180deg, transparent 55%, color-mix(in srgb, var(--bg) 70%, transparent)),
+      repeating-linear-gradient(0deg, rgba(255 255 255 / 0.03) 0 1px, transparent 1px 3px);
+    mix-blend-mode: normal;
+  }
+  .scan {
+    position: absolute;
+    inset: 0 0 auto;
+    height: 30%;
+    background: linear-gradient(180deg, transparent, var(--accent-soft), transparent);
+    animation: scan 5s var(--ease) infinite;
+    z-index: 1;
+  }
+  @keyframes scan {
+    from {
+      transform: translateY(-100%);
+    }
+    to {
+      transform: translateY(340%);
+    }
+  }
+  .corner {
+    position: absolute;
+    width: 22px;
+    height: 22px;
+    border: 2px solid var(--accent);
+    z-index: 2;
+  }
+  .tl {
+    top: 12px;
+    left: 12px;
+    border-right: 0;
+    border-bottom: 0;
+  }
+  .br {
+    bottom: 12px;
+    right: 12px;
+    border-left: 0;
+    border-top: 0;
+  }
+  figcaption {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 12px;
+    color: var(--muted);
+  }
+  .loc {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .bio {
+    display: grid;
+    gap: 16px;
+    font-size: 1.12rem;
+    color: var(--text-2);
+  }
+  .motto {
+    margin-top: 28px;
+    font-size: 0.95rem;
+    color: var(--accent);
+    letter-spacing: 0.06em;
+  }
+  .interests {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin-top: 28px;
+  }
+  .interests li {
+    padding: 22px;
+  }
+  .interests :global(svg) {
+    color: var(--accent);
+  }
+  .interests h3 {
+    margin-top: 16px;
+    font-size: 1rem;
+    letter-spacing: -0.01em;
+  }
+  .interests p {
+    margin-top: 6px;
+    color: var(--muted);
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+  .creds {
+    display: grid;
+    gap: 12px;
+    margin-top: 28px;
+    padding-top: 28px;
+    border-top: 1px solid var(--border);
+  }
+  .cred {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+  }
+  .cred :global(svg) {
+    color: var(--accent);
+    flex: none;
+    margin-top: 2px;
+  }
+  .cred-title {
+    font-weight: 500;
+  }
+  .cred-sub {
+    color: var(--muted);
+    font-size: 0.9rem;
+  }
+  @media (max-width: 900px) {
+    .about {
+      grid-template-columns: 1fr;
+    }
+    .portrait {
+      position: static;
+      max-width: 340px;
+    }
+    .interests {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

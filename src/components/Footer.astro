@@ -1,0 +1,66 @@
+---
+import Logo from './Logo.astro';
+import { site, links } from '../data/profile';
+const year = new Date().getFullYear();
+---
+
+<footer class="footer">
+  <div class="container inner">
+    <div class="left">
+      <Logo size={24} />
+      <span>© {year} {site.name}</span>
+    </div>
+    <div class="right mono">
+      <a href={links.linkedin} target="_blank" rel="noopener">LinkedIn</a>
+      <a href={links.github} target="_blank" rel="noopener">GitHub</a>
+      <a href={site.resume} download>Résumé</a>
+      <button type="button" data-palette-open>Menu <kbd data-mod-key>Ctrl K</kbd></button>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    border-top: 1px solid var(--border);
+    padding-block: 28px;
+    color: var(--muted);
+    font-size: 0.88rem;
+  }
+  .inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  .right a,
+  .right button {
+    color: var(--muted);
+    transition: color 0.2s;
+  }
+  .right button {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: none;
+    border: 0;
+    padding: 0;
+    font: inherit;
+    cursor: pointer;
+  }
+  .right a:hover,
+  .right button:hover {
+    color: var(--text);
+  }
+</style>

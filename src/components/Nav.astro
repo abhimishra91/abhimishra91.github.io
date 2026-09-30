@@ -1,0 +1,180 @@
+---
+import Icon from './Icon.astro';
+import Logo from './Logo.astro';
+import { site } from '../data/profile';
+
+const items = [
+  { id: 'work', label: 'Work' },
+  { id: 'experience', label: 'Experience' },
+  { id: 'stack', label: 'Stack' },
+  { id: 'open-source', label: 'Open source' },
+  { id: 'about', label: 'About' },
+];
+---
+
+<header class="nav" data-nav>
+  <div class="container nav-inner">
+    <a href="/" class="brand" aria-label={`${site.name} — home`}>
+      <Logo size={30} />
+      <span class="mono brand-text">abhishek<span class="dim">.mishra</span></span>
+    </a>
+
+    <nav aria-label="Primary">
+      <ul class="links">
+        {
+          items.map((item) => (
+            <li>
+              <a href={`/#${item.id}`} data-nav-link={item.id}>
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <div class="actions">
+      <button class="palette-trigger" type="button" data-palette-open aria-label="Open command menu">
+        <Icon name="search" size={16} />
+        <span class="palette-label">Jump to…</span>
+        <kbd data-mod-key>Ctrl K</kbd>
+      </button>
+      <button class="btn btn-sm btn-icon" type="button" data-theme-toggle aria-label="Toggle colour theme">
+        <Icon name="sun" size={16} class="icon-sun" />
+        <Icon name="moon" size={16} class="icon-moon" />
+      </button>
+      <a class="btn btn-sm btn-primary resume" href={site.resume} download>
+        <Icon name="download" size={15} /> Résumé
+      </a>
+      <a class="btn btn-sm contact-link" href="/#contact">Contact</a>
+    </div>
+  </div>
+</header>
+
+<style>
+  .nav {
+    position: fixed;
+    inset: 0 0 auto;
+    z-index: 50;
+    padding-block: 14px;
+    transition: background 0.3s, border-color 0.3s, padding 0.3s;
+    border-bottom: 1px solid transparent;
+  }
+  .nav:global(.is-scrolled) {
+    padding-block: 10px;
+    background: color-mix(in srgb, var(--bg) 72%, transparent);
+    backdrop-filter: blur(16px) saturate(140%);
+    -webkit-backdrop-filter: blur(16px) saturate(140%);
+    border-bottom-color: var(--border);
+  }
+  .nav-inner {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+  }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.9rem;
+    flex: none;
+  }
+  .brand-text {
+    font-size: 0.86rem;
+    letter-spacing: 0;
+  }
+  .dim {
+    color: var(--muted);
+  }
+  nav {
+    margin-inline: auto;
+  }
+  .links {
+    display: flex;
+    gap: 4px;
+    padding: 4px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--bg) 50%, transparent);
+    backdrop-filter: blur(10px);
+  }
+  .links a {
+    display: block;
+    padding: 7px 14px;
+    border-radius: 999px;
+    font-size: 0.88rem;
+    color: var(--text-2);
+    transition: color 0.2s, background 0.2s;
+  }
+  .links a:hover {
+    color: var(--text);
+  }
+  .links a:global(.is-active) {
+    color: var(--text);
+    background: var(--surface-2);
+    box-shadow: inset 0 0 0 1px var(--border);
+  }
+  .actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: none;
+  }
+  .palette-trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    height: 36px;
+    padding: 0 8px 0 12px;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--muted);
+    font: 0.85rem var(--font-sans);
+    cursor: pointer;
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .palette-trigger:hover {
+    border-color: var(--border-strong);
+    color: var(--text);
+  }
+  [data-theme-toggle] :global(.icon-moon) {
+    display: none;
+  }
+  :global([data-theme='light']) [data-theme-toggle] :global(.icon-moon) {
+    display: block;
+  }
+  :global([data-theme='light']) [data-theme-toggle] :global(.icon-sun) {
+    display: none;
+  }
+  .contact-link {
+    display: none;
+  }
+
+  @media (max-width: 1020px) {
+    nav {
+      display: none;
+    }
+    .actions {
+      margin-left: auto;
+    }
+  }
+  @media (max-width: 560px) {
+    .palette-label,
+    .palette-trigger kbd,
+    .resume {
+      display: none;
+    }
+    .palette-trigger {
+      width: 36px;
+      padding: 0;
+      justify-content: center;
+    }
+    .brand-text .dim {
+      display: none;
+    }
+    .contact-link {
+      display: inline-flex;
+    }
+  }
+</style>

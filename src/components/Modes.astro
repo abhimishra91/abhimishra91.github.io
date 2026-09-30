@@ -1,0 +1,120 @@
+---
+import Icon from './Icon.astro';
+import SectionHead from './SectionHead.astro';
+import { modes } from '../data/profile';
+---
+
+<section class="section" id="modes" aria-labelledby="modes-title">
+  <div class="container">
+    <SectionHead
+      id="modes-title"
+      eyebrow="How I work"
+      title="One profile. Three ways to plug in."
+      lede="Whether you need someone to lead an AI team, architect the platform, or sit with users until it works — pick a lens and see the evidence."
+    />
+    <div class="modes">
+      {
+        modes.map((m, i) => (
+          <article class="mode panel spotlight" data-reveal style={`--delay: ${i * 90}ms`}>
+            <div class="mode-top">
+              <span class="index mono">{m.index}</span>
+              <span class="chip">{m.role}</span>
+            </div>
+            <h3>{m.title}</h3>
+            <p class="blurb">{m.blurb}</p>
+            <ul>
+              {m.points.map((p) => (
+                <li>
+                  <Icon name="check" size={16} />
+                  <span>{p}</span>
+                </li>
+              ))}
+            </ul>
+            <a class="evidence" href="#work" data-lens-link={m.id}>
+              See the evidence <Icon name="arrowRight" size={16} />
+            </a>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .modes {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+  }
+  .mode {
+    display: flex;
+    flex-direction: column;
+    padding: 28px;
+    transition: border-color 0.3s, transform 0.3s var(--ease);
+  }
+  .mode:hover {
+    border-color: var(--border-strong);
+    transform: translateY(-4px);
+  }
+  .mode-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 40px;
+  }
+  .index {
+    color: var(--accent);
+  }
+  h3 {
+    font-size: 2rem;
+    letter-spacing: -0.035em;
+  }
+  .blurb {
+    margin-top: 10px;
+    color: var(--text-2);
+  }
+  ul {
+    display: grid;
+    gap: 10px;
+    margin: 24px 0 28px;
+    padding-top: 20px;
+    border-top: 1px dashed var(--border-strong);
+  }
+  li {
+    display: flex;
+    gap: 10px;
+    color: var(--text-2);
+    font-size: 0.94rem;
+    line-height: 1.45;
+  }
+  li :global(svg) {
+    flex: none;
+    margin-top: 2px;
+    color: var(--accent);
+  }
+  .evidence {
+    margin-top: auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 500;
+    color: var(--text);
+  }
+  .evidence :global(svg) {
+    transition: transform 0.25s var(--ease);
+  }
+  .evidence:hover {
+    color: var(--accent);
+  }
+  .evidence:hover :global(svg) {
+    transform: translateX(4px);
+  }
+  @media (max-width: 900px) {
+    .modes {
+      grid-template-columns: 1fr;
+    }
+    .mode-top {
+      margin-bottom: 20px;
+    }
+  }
+</style>

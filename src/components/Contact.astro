@@ -1,0 +1,112 @@
+---
+import Icon from './Icon.astro';
+import { site, links } from '../data/profile';
+---
+
+<section class="section contact" id="contact" aria-labelledby="contact-title">
+  <div class="container">
+    <div class="card panel" data-reveal>
+      <div class="glow" aria-hidden="true"></div>
+      <span class="eyebrow">Contact</span>
+      <h2 id="contact-title">Let's build something <span class="gradient-text">that ships.</span></h2>
+      <p class="lede">
+        Open for collaboration on agentic AI, ML platforms and hard applied-ML problems — or just to swap notes on building and
+        leading AI teams.
+      </p>
+
+      <div class="email-row">
+        <a class="email" href={links.email}>{site.email}</a>
+        <button class="btn btn-sm copy" type="button" data-copy-email aria-live="polite">
+          <Icon name="copy" size={15} class="i-copy" />
+          <Icon name="check" size={15} class="i-check" />
+          <span data-copy-label>Copy</span>
+        </button>
+      </div>
+
+      <div class="ctas">
+        <a class="btn btn-primary" href={links.linkedin} target="_blank" rel="noopener">
+          <Icon name="linkedin" size={17} /> Connect on LinkedIn
+        </a>
+        <a class="btn" href={links.github} target="_blank" rel="noopener">
+          <Icon name="github" size={17} /> GitHub
+        </a>
+        <a class="btn" href={site.resume} download>
+          <Icon name="download" size={17} /> Résumé (PDF)
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .contact {
+    padding-bottom: clamp(56px, 8vw, 96px);
+  }
+  .card {
+    position: relative;
+    overflow: hidden;
+    padding: clamp(32px, 6vw, 72px);
+    text-align: center;
+    display: grid;
+    justify-items: center;
+    gap: 18px;
+  }
+  .glow {
+    position: absolute;
+    inset: auto -20% -60% -20%;
+    height: 120%;
+    background:
+      radial-gradient(closest-side, color-mix(in srgb, var(--accent) 22%, transparent), transparent),
+      radial-gradient(closest-side at 70% 50%, color-mix(in srgb, var(--accent-2) 20%, transparent), transparent);
+    pointer-events: none;
+    z-index: -1;
+  }
+  h2 {
+    font-size: clamp(2.1rem, 5.4vw, 3.8rem);
+    letter-spacing: -0.04em;
+    max-width: 16ch;
+    text-wrap: balance;
+  }
+  .lede {
+    max-width: 560px;
+    color: var(--text-2);
+    font-size: 1.08rem;
+  }
+  .email-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 8px;
+  }
+  .email {
+    font-family: var(--font-mono);
+    font-size: clamp(1rem, 2.4vw, 1.35rem);
+    border-bottom: 1px solid var(--border-strong);
+    padding-bottom: 2px;
+    transition: color 0.2s, border-color 0.2s;
+    overflow-wrap: anywhere;
+  }
+  .email:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+  }
+  .copy :global(.i-check) {
+    display: none;
+  }
+  .copy:global(.copied) :global(.i-check) {
+    display: block;
+    color: var(--accent);
+  }
+  .copy:global(.copied) :global(.i-copy) {
+    display: none;
+  }
+  .ctas {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 12px;
+  }
+</style>

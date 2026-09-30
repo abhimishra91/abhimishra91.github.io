@@ -1,0 +1,213 @@
+---
+import { getCollection } from 'astro:content';
+import Icon from './Icon.astro';
+import SectionHead from './SectionHead.astro';
+import { experience } from '../data/profile';
+
+const work = await getCollection('work');
+const titleOf = (id: string) => work.find((w) => w.id === id)?.data.title ?? id;
+---
+
+<section class="section" id="experience" aria-labelledby="exp-title">
+  <div class="container">
+    <SectionHead
+      id="exp-title"
+      eyebrow="Experience"
+      title="12+ years, one direction: production."
+      lede="From automating operations to leading AI platform teams — every role moved closer to owning systems end to end."
+    />
+
+    <ol class="timeline" data-timeline>
+      <span class="rail" aria-hidden="true"><span class="rail-fill"></span></span>
+      {
+        experience.map((job, i) => (
+          <li class="entry" data-reveal>
+            <div class="when mono">
+              <span>{job.period}</span>
+              <span class="place">{job.place}</span>
+            </div>
+            <span class:list={['marker', { current: i === 0 }]} aria-hidden="true" />
+            <article class="panel spotlight body">
+              <header>
+                <p class="company mono">
+                  <Icon name="briefcase" size={14} />
+                  {job.company}
+                </p>
+                <h3>{job.role}</h3>
+                <p class="summary">{job.summary}</p>
+              </header>
+              <ul class="highlights">
+                {job.highlights.map((h) => (
+                  <li>{h}</li>
+                ))}
+              </ul>
+              {job.work.length > 0 && (
+                <div class="related">
+                  <span class="mono">Case study</span>
+                  {job.work.map((id) => (
+                    <a class="chip related-link" href={`/work/${id}/`}>
+                      {titleOf(id)} <Icon name="arrowUpRight" size={12} />
+                    </a>
+                  ))}
+                </div>
+              )}
+            </article>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</section>
+
+<style>
+  .timeline {
+    position: relative;
+    display: grid;
+    gap: 28px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .rail {
+    position: absolute;
+    top: 8px;
+    bottom: 8px;
+    left: 200px;
+    width: 1px;
+    background: var(--border-strong);
+  }
+  .rail-fill {
+    position: absolute;
+    inset: 0;
+    transform-origin: top;
+    transform: scaleY(var(--fill, 0));
+    background: linear-gradient(180deg, var(--accent), var(--accent-2));
+    box-shadow: 0 0 10px var(--glow);
+  }
+  .entry {
+    display: grid;
+    grid-template-columns: 176px 48px minmax(0, 1fr);
+    align-items: start;
+  }
+  .when {
+    display: grid;
+    gap: 4px;
+    padding-top: 26px;
+    text-align: right;
+    color: var(--text-2);
+  }
+  .place {
+    color: var(--muted);
+    font-size: 0.72rem;
+  }
+  .marker {
+    justify-self: center;
+    margin-top: 30px;
+    width: 13px;
+    height: 13px;
+    border-radius: 50%;
+    background: var(--bg);
+    border: 2px solid var(--accent);
+    position: relative;
+    z-index: 1;
+    transform: translateX(0.5px);
+  }
+  .marker.current {
+    background: var(--accent);
+    box-shadow: 0 0 0 5px var(--accent-soft), 0 0 18px var(--glow);
+  }
+  .body {
+    padding: 26px 28px;
+  }
+  .company {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--accent);
+    font-size: 0.8rem;
+  }
+  h3 {
+    margin-top: 8px;
+    font-size: 1.35rem;
+    letter-spacing: -0.02em;
+  }
+  .summary {
+    margin-top: 6px;
+    color: var(--text-2);
+  }
+  .highlights {
+    display: grid;
+    gap: 10px;
+    margin-top: 18px;
+    padding-top: 18px;
+    border-top: 1px solid var(--border);
+  }
+  .highlights li {
+    position: relative;
+    padding-left: 20px;
+    color: var(--text-2);
+    font-size: 0.94rem;
+    line-height: 1.55;
+  }
+  .highlights li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.68em;
+    width: 8px;
+    height: 1px;
+    background: var(--accent);
+  }
+  .related {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    margin-top: 18px;
+  }
+  .related > .mono {
+    color: var(--muted);
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-right: 4px;
+  }
+  .related-link {
+    gap: 6px;
+    color: var(--text);
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .related-link:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  @media (max-width: 760px) {
+    .rail {
+      left: 6px;
+    }
+    .entry {
+      grid-template-columns: 28px minmax(0, 1fr);
+    }
+    .when {
+      grid-column: 2;
+      grid-row: 1;
+      text-align: left;
+      padding-top: 0;
+      margin-bottom: 10px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .marker {
+      grid-column: 1;
+      grid-row: 1;
+      justify-self: start;
+      margin-top: 4px;
+    }
+    .body {
+      grid-column: 2;
+      padding: 22px;
+    }
+  }
+</style>

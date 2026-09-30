@@ -1,0 +1,45 @@
+---
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+---
+
+<Base title="404 — Page not found">
+  <section class="container nf">
+    <p class="mono code">error 404 · route not found</p>
+    <h1>This node isn't in the graph.</h1>
+    <p class="text">The page you're after has moved or never existed. Head home, or press <kbd data-mod-key>Ctrl K</kbd> to search.</p>
+    <div class="ctas">
+      <a class="btn btn-primary" href="/"><Icon name="arrowLeft" size={17} /> Back home</a>
+      <button class="btn" type="button" data-palette-open><Icon name="search" size={17} /> Search the site</button>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .nf {
+    min-height: 80vh;
+    display: grid;
+    align-content: center;
+    justify-items: start;
+    gap: 18px;
+    padding-top: 120px;
+  }
+  .code {
+    color: var(--accent);
+  }
+  h1 {
+    font-size: clamp(2.2rem, 6vw, 4rem);
+    letter-spacing: -0.04em;
+    max-width: 16ch;
+  }
+  .text {
+    color: var(--text-2);
+    max-width: 52ch;
+  }
+  .ctas {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 8px;
+  }
+</style>
