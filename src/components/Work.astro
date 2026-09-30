@@ -11,8 +11,6 @@ const lenses = [
   { id: 'architect', label: 'Architect' },
   { id: 'deploy', label: 'Deploy' },
 ] as const;
-// With five entries the last card spans two columns to complete the bento grid.
-const isWide = (i: number) => work.length === 5 && i === 4;
 const count = (id: string) => (id === 'all' ? work.length : work.filter((w) => w.data.lens.includes(id as never)).length);
 ---
 
@@ -42,7 +40,7 @@ const count = (id: string) => (id === 'all' ? work.length : work.filter((w) => w
         work.map((w, i) => (
           <a
             href={`/work/${w.id}/`}
-            class:list={['card panel spotlight', { featured: w.data.featured, wide: isWide(i) }]}
+            class:list={['card panel spotlight', { featured: w.data.featured }]}
             data-lenses={w.data.lens.join(' ')}
             data-reveal
             style={`--delay: ${(i % 3) * 80}ms`}
@@ -58,13 +56,13 @@ const count = (id: string) => (id === 'all' ? work.length : work.filter((w) => w
             </div>
             <h3>{w.data.title}</h3>
             <p class="summary">{w.data.summary}</p>
-            {(w.data.featured || isWide(i)) && (
+            {w.data.featured && (
               <div class="mini-flow">
                 <FlowDiagram flow={w.data.flow} compact />
               </div>
             )}
             <div class="outcomes">
-              {w.data.outcomes.slice(0, w.data.featured ? 3 : isWide(i) ? 2 : 1).map((o) => (
+              {w.data.outcomes.slice(0, w.data.featured ? 3 : 1).map((o) => (
                 <div>
                   <span class="o-value">{o.value}</span>
                   <span class="o-label">{o.label}</span>
@@ -172,17 +170,13 @@ const count = (id: string) => (id === 'all' ? work.length : work.filter((w) => w
     filter: grayscale(1);
     transform: scale(0.985);
   }
-  /* Bento: featured 2×2, two cards stacked beside it, then a 1 + 2 row. */
+  /* Featured spans two columns beside one card; the rest fill the next row. */
   .featured {
     grid-column: span 2;
-    grid-row: span 2;
     padding: 32px;
     background:
       radial-gradient(500px 300px at 100% 0%, color-mix(in srgb, var(--accent-2) 14%, transparent), transparent 70%),
       linear-gradient(180deg, var(--surface-2), var(--surface));
-  }
-  .wide {
-    grid-column: span 2;
   }
   .card-meta {
     padding-right: 48px;
@@ -282,15 +276,6 @@ const count = (id: string) => (id === 'all' ? work.length : work.filter((w) => w
   @media (max-width: 1020px) {
     .grid {
       grid-template-columns: repeat(2, 1fr);
-    }
-    .featured {
-      grid-row: auto;
-    }
-    .wide {
-      grid-column: auto;
-    }
-    .wide .mini-flow {
-      display: none;
     }
   }
   @media (max-width: 680px) {
