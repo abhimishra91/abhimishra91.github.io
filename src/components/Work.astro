@@ -1,0 +1,317 @@
+---
+import { getCollection } from 'astro:content';
+import Icon from './Icon.astro';
+import SectionHead from './SectionHead.astro';
+import FlowDiagram from './FlowDiagram.astro';
+
+const work = (await getCollection('work')).sort((a, b) => a.data.order - b.data.order);
+const lenses = [
+  { id: 'all', label: 'All' },
+  { id: 'lead', label: 'Lead' },
+  { id: 'architect', label: 'Architect' },
+  { id: 'deploy', label: 'Deploy' },
+] as const;
+// With five entries the last card spans two columns to complete the bento grid.
+const isWide = (i: number) => work.length === 5 && i === 4;
+const count = (id: string) => (id === 'all' ? work.length : work.filter((w) => w.data.lens.includes(id as never)).length);
+---
+
+<section class="section" id="work" aria-labelledby="work-title">
+  <div class="container">
+    <div class="head-row">
+      <SectionHead
+        id="work-title"
+        eyebrow="Selected work"
+        title="Systems I've shipped."
+        lede="Five case studies spanning 12+ years — from 0→1 NLP automation to agentic AI platforms. Filter by the lens you care about."
+      />
+      <div class="filters" role="group" aria-label="Filter case studies by lens" data-reveal>
+        {
+          lenses.map((l) => (
+            <button type="button" data-lens={l.id} aria-pressed={l.id === 'all' ? 'true' : 'false'}>
+              {l.label}
+              <span class="count mono">{count(l.id)}</span>
+            </button>
+          ))
+        }
+      </div>
+    </div>
+
+    <div class="grid" data-work-grid>
+      {
+        work.map((w, i) => (
+          <a
+            href={`/work/${w.id}/`}
+            class:list={['card panel spotlight', { featured: w.data.featured, wide: isWide(i) }]}
+            data-lenses={w.data.lens.join(' ')}
+            data-reveal
+            style={`--delay: ${(i % 3) * 80}ms`}
+          >
+            <div class="card-meta mono">
+              <span>{w.data.company}</span>
+              <span class="dot" />
+              <span>{w.data.period}</span>
+              {w.data.featured && <span class="badge">Featured</span>}
+              <span class="go" aria-hidden="true">
+                <Icon name="arrowUpRight" size={18} />
+              </span>
+            </div>
+            <h3>{w.data.title}</h3>
+            <p class="summary">{w.data.summary}</p>
+            {(w.data.featured || isWide(i)) && (
+              <div class="mini-flow">
+                <FlowDiagram flow={w.data.flow} compact />
+              </div>
+            )}
+            <div class="outcomes">
+              {w.data.outcomes.slice(0, w.data.featured ? 3 : isWide(i) ? 2 : 1).map((o) => (
+                <div>
+                  <span class="o-value">{o.value}</span>
+                  <span class="o-label">{o.label}</span>
+                </div>
+              ))}
+            </div>
+            <div class="card-foot chips">
+              {w.data.tags.slice(0, w.data.featured ? 6 : 3).map((t) => (
+                <span class="chip">{t}</span>
+              ))}
+            </div>
+          </a>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<script>
+  const buttons = [...document.querySelectorAll<HTMLButtonElement>('[data-lens]')];
+  const cards = [...document.querySelectorAll<HTMLElement>('[data-work-grid] > .card')];
+
+  function apply(lens: string) {
+    buttons.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.lens === lens)));
+    cards.forEach((c) => {
+      const match = lens === 'all' || (c.dataset.lenses ?? '').split(' ').includes(lens);
+      c.classList.toggle('is-dim', !match);
+      c.toggleAttribute('inert', !match);
+    });
+  }
+
+  buttons.forEach((b) => b.addEventListener('click', () => apply(b.dataset.lens ?? 'all')));
+
+  // "See the evidence" links in the modes section pre-select a lens.
+  document.querySelectorAll<HTMLAnchorElement>('[data-lens-link]').forEach((a) =>
+    a.addEventListener('click', () => apply(a.dataset.lensLink ?? 'all')),
+  );
+</script>
+
+<style>
+  .head-row {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 24px;
+    flex-wrap: wrap;
+    margin-bottom: clamp(36px, 5vw, 60px);
+  }
+  .head-row :global(.section-head) {
+    margin-bottom: 0;
+  }
+  .filters {
+    display: flex;
+    gap: 4px;
+    padding: 4px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    background: var(--surface);
+  }
+  .filters button {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 14px;
+    border: 0;
+    border-radius: 999px;
+    background: transparent;
+    color: var(--text-2);
+    font: 500 0.88rem var(--font-sans);
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+  }
+  .filters button:hover {
+    color: var(--text);
+  }
+  .filters button[aria-pressed='true'] {
+    background: var(--accent);
+    color: var(--accent-ink);
+  }
+  .count {
+    font-size: 0.7rem;
+    opacity: 0.7;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+  }
+  .card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding: 26px;
+    min-height: 100%;
+    transition: border-color 0.3s, transform 0.35s var(--ease), opacity 0.35s, filter 0.35s;
+  }
+  .card:hover {
+    border-color: color-mix(in srgb, var(--accent) 45%, var(--border));
+    transform: translateY(-4px);
+  }
+  .card:global(.is-dim) {
+    opacity: 0.22;
+    filter: grayscale(1);
+    transform: scale(0.985);
+  }
+  /* Bento: featured 2×2, two cards stacked beside it, then a 1 + 2 row. */
+  .featured {
+    grid-column: span 2;
+    grid-row: span 2;
+    padding: 32px;
+    background:
+      radial-gradient(500px 300px at 100% 0%, color-mix(in srgb, var(--accent-2) 14%, transparent), transparent 70%),
+      linear-gradient(180deg, var(--surface-2), var(--surface));
+  }
+  .wide {
+    grid-column: span 2;
+  }
+  .card-meta {
+    padding-right: 48px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--muted);
+    flex-wrap: wrap;
+  }
+  .dot {
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    background: currentColor;
+  }
+  .badge {
+    margin-left: auto;
+    padding: 3px 9px;
+    border-radius: 999px;
+    color: var(--accent);
+    background: var(--accent-soft);
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+  h3 {
+    font-size: 1.35rem;
+    letter-spacing: -0.02em;
+  }
+  .featured h3 {
+    font-size: clamp(1.7rem, 3vw, 2.4rem);
+    letter-spacing: -0.035em;
+    max-width: 16ch;
+  }
+  .summary {
+    color: var(--text-2);
+    font-size: 0.96rem;
+  }
+  .featured .summary {
+    font-size: 1.06rem;
+    max-width: 56ch;
+  }
+  .mini-flow {
+    margin-block: 18px 6px;
+    padding: 22px 14px 16px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    background: color-mix(in srgb, var(--bg) 60%, transparent);
+  }
+  .outcomes {
+    display: flex;
+    gap: 28px;
+    margin-top: auto;
+    padding-top: 12px;
+  }
+  .outcomes div {
+    display: grid;
+  }
+  .o-value {
+    font-size: 1.5rem;
+    font-weight: 600;
+    letter-spacing: -0.03em;
+    color: var(--accent);
+  }
+  .featured .o-value {
+    font-size: 2rem;
+  }
+  .o-label {
+    color: var(--muted);
+    font-size: 0.8rem;
+  }
+  .card-foot {
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+  }
+  .go {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    display: grid;
+    place-items: center;
+    flex: none;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1px solid var(--border-strong);
+    color: var(--text-2);
+    transition: background 0.25s, color 0.25s, transform 0.3s var(--ease);
+  }
+  .card:hover .go {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--accent-ink);
+    transform: rotate(45deg);
+  }
+
+  @media (max-width: 1020px) {
+    .grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .featured {
+      grid-row: auto;
+    }
+    .wide {
+      grid-column: auto;
+    }
+    .wide .mini-flow {
+      display: none;
+    }
+  }
+  @media (max-width: 680px) {
+    .grid {
+      grid-template-columns: 1fr;
+    }
+    .featured {
+      grid-column: auto;
+      padding: 26px;
+    }
+    .mini-flow {
+      display: none;
+    }
+    .filters {
+      width: 100%;
+      overflow-x: auto;
+    }
+    .filters button {
+      flex: 1;
+      justify-content: center;
+      padding-inline: 10px;
+    }
+  }
+</style>

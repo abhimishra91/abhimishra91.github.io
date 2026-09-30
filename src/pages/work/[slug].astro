@@ -1,0 +1,256 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import Icon from '../../components/Icon.astro';
+import FlowDiagram from '../../components/FlowDiagram.astro';
+import { site } from '../../data/profile';
+
+export async function getStaticPaths() {
+  const work = (await getCollection('work')).sort((a, b) => a.data.order - b.data.order);
+  return work.map((entry, i) => ({
+    params: { slug: entry.id },
+    props: {
+      entry,
+      prev: work[(i - 1 + work.length) % work.length],
+      next: work[(i + 1) % work.length],
+    },
+  }));
+}
+
+const { entry, prev, next } = Astro.props;
+const { Content } = await render(entry);
+const d = entry.data;
+const lensNames = { lead: 'Lead', architect: 'Architect', deploy: 'Deploy' } as const;
+const mailto = `mailto:${site.email}?subject=${encodeURIComponent(`About: ${d.title}`)}`;
+---
+
+<Base title={`${d.title} — ${site.name}`} description={d.summary}>
+  <article class="case">
+    <header class="container case-head">
+      <a class="back mono" href="/#work"><Icon name="arrowLeft" size={15} /> All work</a>
+      <p class="meta mono" data-reveal>
+        <span>{d.company}</span><span class="dot"></span><span>{d.period}</span>
+      </p>
+      <h1 data-reveal style="--delay: 60ms">{d.title}</h1>
+      <p class="lede" data-reveal style="--delay: 120ms">{d.summary}</p>
+      <ul class="outcomes" data-reveal style="--delay: 180ms">
+        {
+          d.outcomes.map((o) => (
+            <li>
+              <span class="o-value gradient-text">{o.value}</span>
+              <span class="o-label">{o.label}</span>
+            </li>
+          ))
+        }
+      </ul>
+    </header>
+
+    <section class="container" aria-label="Architecture">
+      <div class="arch panel" data-reveal>
+        <p class="arch-title mono"><span class="status-dot"></span> Architecture · simplified</p>
+        <FlowDiagram flow={d.flow} />
+      </div>
+    </section>
+
+    <div class="container case-body">
+      <div class="prose" data-reveal>
+        <Content />
+      </div>
+      <aside class="facts panel" data-reveal>
+        <dl>
+          <div>
+            <dt class="mono">My role</dt>
+            <dd>{d.role}</dd>
+          </div>
+          <div>
+            <dt class="mono">Company</dt>
+            <dd>{d.company}</dd>
+          </div>
+          <div>
+            <dt class="mono">When</dt>
+            <dd>{d.period}</dd>
+          </div>
+          <div>
+            <dt class="mono">Lens</dt>
+            <dd class="chips">{d.lens.map((l) => <span class="chip lens">{lensNames[l]}</span>)}</dd>
+          </div>
+          <div>
+            <dt class="mono">Stack</dt>
+            <dd class="chips">{d.tags.map((t) => <span class="chip">{t}</span>)}</dd>
+          </div>
+        </dl>
+        <a class="btn btn-primary discuss" href={mailto}>
+          <Icon name="mail" size={17} /> Discuss this project
+        </a>
+      </aside>
+    </div>
+
+    <nav class="container pager" aria-label="More case studies">
+      <a class="panel spotlight" href={`/work/${prev.id}/`}>
+        <span class="mono"><Icon name="arrowLeft" size={14} /> Previous</span>
+        <span class="p-title">{prev.data.title}</span>
+      </a>
+      <a class="panel spotlight next" href={`/work/${next.id}/`}>
+        <span class="mono">Next <Icon name="arrowRight" size={14} /></span>
+        <span class="p-title">{next.data.title}</span>
+      </a>
+    </nav>
+  </article>
+</Base>
+
+<style>
+  .case {
+    padding-top: clamp(110px, 14vw, 150px);
+    padding-bottom: clamp(64px, 9vw, 110px);
+  }
+  .case-head {
+    display: grid;
+    gap: 18px;
+  }
+  .back {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    width: fit-content;
+    color: var(--muted);
+    margin-bottom: 18px;
+    transition: color 0.2s;
+  }
+  .back:hover {
+    color: var(--accent);
+  }
+  .meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--accent);
+  }
+  .dot {
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    background: currentColor;
+  }
+  h1 {
+    font-size: clamp(2.3rem, 6vw, 4.4rem);
+    letter-spacing: -0.045em;
+    line-height: 1.02;
+    max-width: 18ch;
+    text-wrap: balance;
+  }
+  .lede {
+    max-width: 62ch;
+    color: var(--text-2);
+    font-size: clamp(1.05rem, 1.6vw, 1.22rem);
+  }
+  .outcomes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: clamp(24px, 5vw, 56px);
+    margin-top: 16px;
+  }
+  .outcomes li {
+    display: grid;
+    gap: 2px;
+  }
+  .o-value {
+    font-size: clamp(2rem, 4vw, 2.8rem);
+    font-weight: 600;
+    letter-spacing: -0.04em;
+  }
+  .o-label {
+    color: var(--muted);
+    font-size: 0.9rem;
+  }
+  .arch {
+    margin-top: clamp(40px, 6vw, 64px);
+    padding: clamp(24px, 4vw, 40px);
+  }
+  .arch-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--muted);
+    margin-bottom: 36px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-size: 0.72rem;
+  }
+  .case-body {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 320px;
+    gap: clamp(32px, 6vw, 80px);
+    align-items: start;
+    margin-top: clamp(48px, 7vw, 80px);
+  }
+  .facts {
+    position: sticky;
+    top: 100px;
+    padding: 24px;
+  }
+  dl {
+    display: grid;
+    gap: 18px;
+    margin: 0 0 24px;
+  }
+  dt {
+    color: var(--muted);
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    margin-bottom: 6px;
+  }
+  dd {
+    margin: 0;
+  }
+  .lens {
+    color: var(--accent);
+    border-color: color-mix(in srgb, var(--accent) 35%, transparent);
+  }
+  .discuss {
+    width: 100%;
+  }
+  .pager {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+    margin-top: clamp(56px, 8vw, 96px);
+  }
+  .pager a {
+    display: grid;
+    gap: 8px;
+    padding: 24px;
+    transition: border-color 0.3s, transform 0.3s var(--ease);
+  }
+  .pager a:hover {
+    border-color: color-mix(in srgb, var(--accent) 45%, var(--border));
+    transform: translateY(-3px);
+  }
+  .pager .mono {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--muted);
+  }
+  .pager .next {
+    text-align: right;
+    justify-items: end;
+  }
+  .p-title {
+    font-size: 1.15rem;
+    font-weight: 500;
+  }
+  @media (max-width: 900px) {
+    .case-body {
+      grid-template-columns: 1fr;
+    }
+    .facts {
+      position: static;
+    }
+  }
+  @media (max-width: 560px) {
+    .pager {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

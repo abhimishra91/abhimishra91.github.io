@@ -1,0 +1,158 @@
+---
+// Renders a case study's simplified architecture as a pipeline with a travelling pulse.
+interface Props {
+  flow: { label: string; detail?: string }[];
+  compact?: boolean;
+}
+const { flow, compact = false } = Astro.props;
+---
+
+<ol class:list={['flow', { compact }]} style={`--n: ${flow.length}`}>
+  {
+    flow.map((step, i) => (
+      <li style={`--i: ${i}`}>
+        <span class="node" />
+        <span class="step-label">{step.label}</span>
+        {!compact && step.detail && <span class="step-detail">{step.detail}</span>}
+      </li>
+    ))
+  }
+</ol>
+
+<style>
+  .flow {
+    --dur: calc(var(--n) * 0.7s);
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(var(--n), minmax(0, 1fr));
+    gap: 12px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  /* Rail */
+  .flow::before,
+  .flow::after {
+    content: '';
+    position: absolute;
+    top: 9px;
+    left: calc(50% / var(--n));
+    right: calc(50% / var(--n));
+    height: 1px;
+  }
+  .flow::before {
+    background: repeating-linear-gradient(90deg, var(--border-strong) 0 4px, transparent 4px 9px);
+  }
+  .flow::after {
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    background-size: 30% 100%;
+    background-repeat: no-repeat;
+    animation: rail var(--dur) linear infinite;
+    filter: drop-shadow(0 0 4px var(--glow));
+  }
+  @keyframes rail {
+    from {
+      background-position: -40% 0;
+    }
+    to {
+      background-position: 140% 0;
+    }
+  }
+  li {
+    position: relative;
+    display: grid;
+    align-content: start;
+    justify-items: center;
+    text-align: center;
+    gap: 6px;
+  }
+  .node {
+    width: 19px;
+    height: 19px;
+    border-radius: 50%;
+    background: var(--bg-2);
+    border: 1.5px solid var(--accent);
+    box-shadow: 0 0 0 4px var(--bg), 0 0 14px var(--glow);
+    position: relative;
+    z-index: 1;
+    animation: node-pulse var(--dur) ease-in-out infinite;
+    animation-delay: calc(var(--i) * 0.7s);
+  }
+  .node::after {
+    content: '';
+    position: absolute;
+    inset: 4px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+  @keyframes node-pulse {
+    0%,
+    100% {
+      box-shadow: 0 0 0 4px var(--bg), 0 0 8px transparent;
+    }
+    12% {
+      box-shadow: 0 0 0 4px var(--bg), 0 0 22px var(--glow);
+    }
+  }
+  .step-label {
+    margin-top: 6px;
+    font-weight: 500;
+    font-size: 0.95rem;
+    line-height: 1.25;
+  }
+  .step-detail {
+    color: var(--muted);
+    font-size: 0.82rem;
+    line-height: 1.4;
+  }
+  .compact .step-label {
+    font: 0.68rem/1.3 var(--font-mono);
+    color: var(--muted);
+  }
+  .compact .node {
+    width: 13px;
+    height: 13px;
+  }
+  .compact .node::after {
+    inset: 3px;
+  }
+  .compact::before,
+  .compact::after {
+    top: 6px;
+  }
+
+  @media (max-width: 720px) {
+    .flow:not(.compact) {
+      grid-template-columns: 1fr;
+      gap: 22px;
+    }
+    .flow:not(.compact)::before,
+    .flow:not(.compact)::after {
+      top: 10px;
+      bottom: 10px;
+      left: 9px;
+      right: auto;
+      width: 1px;
+      height: auto;
+    }
+    .flow:not(.compact)::before {
+      background: repeating-linear-gradient(180deg, var(--border-strong) 0 4px, transparent 4px 9px);
+    }
+    .flow:not(.compact)::after {
+      display: none;
+    }
+    .flow:not(.compact) li {
+      grid-template-columns: 19px 1fr;
+      justify-items: start;
+      text-align: left;
+      column-gap: 16px;
+      row-gap: 2px;
+    }
+    .flow:not(.compact) .node {
+      grid-row: span 2;
+    }
+    .flow:not(.compact) .step-label {
+      margin-top: 0;
+    }
+  }
+</style>

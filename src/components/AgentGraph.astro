@@ -1,0 +1,314 @@
+---
+// Animated illustration of an agentic analytics loop — the kind of system
+// described in the featured case study. Purely decorative.
+const nodes = [
+  { id: 'ask', x: 44, y: 150, label: 'question' },
+  { id: 'plan', x: 150, y: 150, label: 'planner·llm' },
+  { id: 'meta', x: 270, y: 58, label: 'metadata', above: true },
+  { id: 'guard', x: 270, y: 242, label: 'guardrails' },
+  { id: 'sql', x: 300, y: 150, label: 'sql' },
+  { id: 'wh', x: 410, y: 150, label: 'warehouse' },
+  { id: 'ans', x: 410, y: 262, label: 'answer' },
+];
+const byId = Object.fromEntries(nodes.map((n) => [n.id, n]));
+
+const edges: [string, string][] = [
+  ['ask', 'plan'],
+  ['plan', 'meta'],
+  ['meta', 'sql'],
+  ['plan', 'guard'],
+  ['guard', 'sql'],
+  ['sql', 'wh'],
+  ['wh', 'ans'],
+];
+
+// Gentle curves between nodes.
+function curve(a: string, b: string) {
+  const p = byId[a];
+  const q = byId[b];
+  const mx = (p.x + q.x) / 2;
+  return `M${p.x} ${p.y} C${mx} ${p.y}, ${mx} ${q.y}, ${q.x} ${q.y}`;
+}
+
+// Each step lights up edges and prints a log line.
+const steps = [
+  { edges: ['ask-plan'], log: 'ask  "revenue growth by market, last quarter?"' },
+  { edges: ['plan-meta'], log: 'plan → fetch schema + business definitions' },
+  { edges: ['meta-sql'], log: 'gen  SQL grounded in 4 tables' },
+  { edges: ['plan-guard', 'guard-sql'], log: 'check read-only · row policy · cost ✓' },
+  { edges: ['sql-wh'], log: 'exec warehouse query (212 ms)' },
+  { edges: ['wh-ans'], log: 'done answer + chart returned ✓' },
+];
+---
+
+<figure class="graph panel" data-agent-graph data-steps={JSON.stringify(steps)} aria-hidden="true">
+  <div class="graph-head mono">
+    <span class="dots"><i></i><i></i><i></i></span>
+    <span>agent.run</span>
+    <span class="live"><span class="status-dot"></span>live</span>
+  </div>
+  <svg viewBox="0 0 460 300" class="graph-svg">
+    <defs>
+      <linearGradient id="edge-grad" x1="0" x2="1">
+        <stop offset="0" stop-color="var(--accent)" />
+        <stop offset="1" stop-color="var(--accent-2)" />
+      </linearGradient>
+      <radialGradient id="pulse-grad">
+        <stop offset="0" stop-color="#fff" />
+        <stop offset="0.35" stop-color="var(--accent)" />
+        <stop offset="1" stop-color="var(--accent)" stop-opacity="0" />
+      </radialGradient>
+    </defs>
+    <g class="edges">
+      {edges.map(([a, b]) => <path d={curve(a, b)} data-edge={`${a}-${b}`} />)}
+    </g>
+    <g class="pulses"></g>
+    <g class="nodes">
+      {
+        nodes.map((n) => (
+          <g data-node={n.id} transform={`translate(${n.x} ${n.y})`}>
+            <circle class="halo" r="15" />
+            <circle class="ring" r="9" />
+            <circle class="core" r="4" />
+            <text y={n.above ? -20 : 28} text-anchor="middle">
+              {n.label}
+            </text>
+          </g>
+        ))
+      }
+    </g>
+  </svg>
+  <div class="log mono" data-log>
+    {steps.map((s) => <p>{s.log}</p>)}
+  </div>
+</figure>
+
+<script>
+  const root = document.querySelector<HTMLElement>('[data-agent-graph]');
+  if (root) {
+    const steps: { edges: string[]; log: string }[] = JSON.parse(root.dataset.steps ?? '[]');
+    const svg = root.querySelector('svg')!;
+    const pulses = svg.querySelector('.pulses')!;
+    const log = root.querySelector<HTMLElement>('[data-log]')!;
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const SVGNS = 'http://www.w3.org/2000/svg';
+
+    if (reduce) {
+      root.classList.add('static');
+    } else {
+      log.innerHTML = '';
+      let step = 0;
+      let running = false;
+      let timer = 0;
+
+      const lightNode = (id: string) => {
+        const n = svg.querySelector(`[data-node="${id}"]`);
+        n?.classList.add('on');
+      };
+
+      const travel = (edgeId: string, duration: number) =>
+        new Promise<void>((resolve) => {
+          const path = svg.querySelector<SVGPathElement>(`[data-edge="${edgeId}"]`)!;
+          const len = path.getTotalLength();
+          const dot = document.createElementNS(SVGNS, 'circle');
+          dot.setAttribute('r', '7');
+          dot.setAttribute('fill', 'url(#pulse-grad)');
+          pulses.appendChild(dot);
+          path.classList.add('on');
+          const start = performance.now();
+          const frame = (now: number) => {
+            const t = Math.min(1, (now - start) / duration);
+            const e = t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+            const pt = path.getPointAtLength(e * len);
+            dot.setAttribute('cx', String(pt.x));
+            dot.setAttribute('cy', String(pt.y));
+            if (t < 1) requestAnimationFrame(frame);
+            else {
+              dot.remove();
+              lightNode(edgeId.split('-')[1]);
+              resolve();
+            }
+          };
+          requestAnimationFrame(frame);
+        });
+
+      const print = (text: string) => {
+        const p = document.createElement('p');
+        p.textContent = text;
+        log.appendChild(p);
+        while (log.children.length > 4) log.firstElementChild?.remove();
+      };
+
+      const reset = () => {
+        svg.querySelectorAll('.on').forEach((el) => el.classList.remove('on'));
+        lightNode('ask');
+      };
+
+      const tick = async () => {
+        if (!running) return;
+        if (step === 0) reset();
+        const s = steps[step];
+        print(s.log);
+        for (const edge of s.edges) await travel(edge, 700);
+        step = (step + 1) % steps.length;
+        timer = window.setTimeout(tick, step === 0 ? 2200 : 350);
+      };
+
+      // Only animate while visible.
+      new IntersectionObserver(([entry]) => {
+        if (entry.isIntersecting && !running) {
+          running = true;
+          tick();
+        } else if (!entry.isIntersecting) {
+          running = false;
+          clearTimeout(timer);
+        }
+      }).observe(root);
+    }
+  }
+</script>
+
+<style>
+  .graph {
+    margin: 0;
+    padding: 14px;
+    box-shadow: var(--shadow);
+  }
+  .graph-head {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 2px 4px 12px;
+    color: var(--muted);
+    font-size: 0.72rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .dots {
+    display: flex;
+    gap: 5px;
+  }
+  .dots i {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--border-strong);
+  }
+  .live {
+    margin-left: auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--accent);
+  }
+  .graph-svg {
+    width: 100%;
+    height: auto;
+    margin-block: 8px;
+    overflow: visible;
+  }
+  .edges path {
+    fill: none;
+    stroke: var(--border-strong);
+    stroke-width: 1.4;
+    stroke-dasharray: 3 5;
+    transition: stroke 0.4s;
+  }
+  .edges path:global(.on) {
+    stroke: url(#edge-grad);
+    stroke-dasharray: none;
+    filter: drop-shadow(0 0 4px var(--glow));
+  }
+  .nodes .halo {
+    fill: var(--accent);
+    opacity: 0;
+    transition: opacity 0.4s;
+  }
+  .nodes .ring {
+    fill: var(--bg-2);
+    stroke: var(--border-strong);
+    stroke-width: 1.4;
+    transition: stroke 0.4s;
+  }
+  .nodes .core {
+    fill: var(--muted);
+    transition: fill 0.4s;
+  }
+  .nodes text {
+    fill: var(--muted);
+    font: 10.5px var(--font-mono);
+    letter-spacing: 0.02em;
+    transition: fill 0.4s;
+  }
+  .nodes :global(.on) .halo {
+    opacity: 0.14;
+  }
+  .nodes :global(.on) .ring {
+    stroke: var(--accent);
+  }
+  .nodes :global(.on) .core {
+    fill: var(--accent);
+  }
+  .nodes :global(.on) text {
+    fill: var(--text);
+  }
+  .log {
+    height: 8.4em;
+    padding: 10px 12px;
+    border-radius: var(--radius-sm);
+    background: color-mix(in srgb, var(--bg) 70%, transparent);
+    border: 1px solid var(--border);
+    color: var(--text-2);
+    font-size: 0.72rem;
+    line-height: 1.55;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+  }
+  .log :global(p) {
+    line-height: 1.7;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    animation: line-in 0.35s var(--ease);
+  }
+  .log :global(p:last-child) {
+    color: var(--accent);
+  }
+  .log :global(p:last-child)::after {
+    content: '▍';
+    margin-left: 4px;
+    animation: blink 1s steps(1) infinite;
+  }
+  @keyframes line-in {
+    from {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+  }
+  @keyframes blink {
+    50% {
+      opacity: 0;
+    }
+  }
+  /* Reduced motion: show the full, lit graph. */
+  .static .edges path {
+    stroke: url(#edge-grad);
+    stroke-dasharray: none;
+  }
+  .static .nodes .ring {
+    stroke: var(--accent);
+  }
+  .static .nodes .core {
+    fill: var(--accent);
+  }
+  .static .log {
+    height: auto;
+  }
+  .static .log :global(p) {
+    display: none;
+  }
+  .static .log :global(p:nth-last-child(-n + 4)) {
+    display: block;
+  }
+</style>

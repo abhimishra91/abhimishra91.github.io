@@ -1,0 +1,252 @@
+---
+import { Image } from 'astro:assets';
+import portrait from '../assets/portrait.jpg';
+import Icon from './Icon.astro';
+import AgentGraph from './AgentGraph.astro';
+import { site, links, hero, metrics } from '../data/profile';
+---
+
+<section class="hero" id="top">
+  <div class="container">
+    <div class="hero-grid">
+      <div class="hero-copy">
+        <div class="id-row" data-reveal>
+          <div class="avatar">
+            <Image src={portrait} alt={`Portrait of ${site.name}`} width={120} height={120} loading="eager" />
+          </div>
+          <div class="id-meta">
+            <p class="name">{site.name}</p>
+            <p class="status mono">
+              <span class="status-dot"></span>
+              {site.status}
+              <span class="sep">/</span>
+              <Icon name="pin" size={13} />
+              {site.location}
+            </p>
+          </div>
+        </div>
+
+        <p class="kicker mono" data-reveal style="--delay: 80ms">
+          {hero.kicker.map((k, i) => <>{i > 0 && <span class="slash">/</span>}<span>{k}</span></>)}
+        </p>
+
+        <h1 data-reveal style="--delay: 140ms">
+          <span class="gradient-text">{hero.headline[0]}</span>
+          <span class="h1-2">{hero.headline[1]}</span>
+        </h1>
+
+        <p class="intro" data-reveal style="--delay: 200ms">{hero.intro}</p>
+
+        <div class="ctas" data-reveal style="--delay: 260ms">
+          <a class="btn btn-primary" href="#work">
+            Explore my work <Icon name="arrowRight" size={18} />
+          </a>
+          <a class="btn" href={site.resume} download>
+            <Icon name="download" size={18} /> Résumé
+          </a>
+          <div class="socials">
+            <a class="btn btn-icon" href={links.linkedin} target="_blank" rel="noopener" aria-label="LinkedIn">
+              <Icon name="linkedin" size={18} />
+            </a>
+            <a class="btn btn-icon" href={links.github} target="_blank" rel="noopener" aria-label="GitHub">
+              <Icon name="github" size={18} />
+            </a>
+            <a class="btn btn-icon" href={links.email} aria-label="Email">
+              <Icon name="mail" size={18} />
+            </a>
+          </div>
+        </div>
+
+        <p class="hint mono" data-reveal style="--delay: 320ms">
+          Tip: press <kbd data-mod-key>Ctrl K</kbd> to jump anywhere
+        </p>
+      </div>
+
+      <div class="hero-visual" data-reveal style="--delay: 200ms">
+        <AgentGraph />
+      </div>
+    </div>
+
+    <ul class="metrics panel" aria-label="Impact at a glance">
+      {
+        metrics.map((m, i) => (
+          <li data-reveal style={`--delay: ${i * 70}ms`}>
+            <span class="metric-value" data-count={m.value} data-prefix={m.prefix} data-suffix={m.suffix}>
+              {m.prefix}
+              {m.value}
+              {m.suffix}
+            </span>
+            <span class="metric-label">{m.label}</span>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  .hero {
+    padding-top: clamp(120px, 16vw, 170px);
+    padding-bottom: clamp(56px, 8vw, 96px);
+  }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+    gap: clamp(32px, 5vw, 72px);
+    align-items: center;
+  }
+  .id-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+  .avatar {
+    position: relative;
+    width: 60px;
+    height: 60px;
+    flex: none;
+    border-radius: 50%;
+    padding: 2px;
+    background: conic-gradient(from 180deg, var(--accent), var(--accent-2), var(--accent));
+    animation: spin 8s linear infinite;
+  }
+  .avatar :global(img) {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--bg);
+    animation: spin 8s linear infinite reverse;
+  }
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  .name {
+    font-weight: 600;
+    font-size: 1.05rem;
+    letter-spacing: -0.01em;
+  }
+  .status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text-2);
+    margin-top: 4px;
+    flex-wrap: wrap;
+  }
+  .sep {
+    color: var(--border-strong);
+  }
+  .kicker {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-size: 0.74rem;
+    margin-bottom: 18px;
+  }
+  .slash {
+    color: var(--accent);
+  }
+  h1 {
+    font-size: clamp(2.4rem, 5.6vw, 4.4rem);
+    line-height: 1.02;
+    letter-spacing: -0.04em;
+    font-weight: 600;
+    text-wrap: balance;
+  }
+  h1 span {
+    display: block;
+  }
+  .h1-2 {
+    color: var(--text);
+  }
+  .intro {
+    margin-top: 24px;
+    max-width: 560px;
+    color: var(--text-2);
+    font-size: clamp(1.02rem, 1.4vw, 1.14rem);
+  }
+  .ctas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 32px;
+  }
+  .socials {
+    display: flex;
+    gap: 8px;
+  }
+  .hint {
+    margin-top: 28px;
+    color: var(--muted);
+    font-size: 0.74rem;
+  }
+  .metrics {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    margin-top: clamp(56px, 8vw, 88px);
+    overflow: hidden;
+  }
+  .metrics li {
+    display: grid;
+    gap: 6px;
+    align-content: start;
+    padding: 24px 22px;
+    border-left: 1px solid var(--border);
+  }
+  .metrics li:first-child {
+    border-left: 0;
+  }
+  .metric-value {
+    font-size: clamp(1.7rem, 3vw, 2.3rem);
+    font-weight: 600;
+    letter-spacing: -0.03em;
+    font-variant-numeric: tabular-nums;
+    color: var(--text);
+  }
+  .metric-label {
+    color: var(--muted);
+    font-size: 0.86rem;
+    line-height: 1.4;
+  }
+
+  @media (max-width: 960px) {
+    .hero-grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .hero-visual {
+      max-width: 560px;
+    }
+    .metrics {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .metrics li {
+      border-left: 0;
+      border-top: 1px solid var(--border);
+    }
+    .metrics li:nth-child(-n + 2) {
+      border-top: 0;
+    }
+    .metrics li:nth-child(even) {
+      border-left: 1px solid var(--border);
+    }
+    .metrics li:last-child {
+      grid-column: 1 / -1;
+      border-left: 0;
+    }
+  }
+  @media (max-width: 560px) {
+    .hint {
+      display: none;
+    }
+    .metrics li {
+      padding: 18px 16px;
+    }
+  }
+</style>

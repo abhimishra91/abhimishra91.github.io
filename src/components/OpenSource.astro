@@ -1,0 +1,160 @@
+---
+import Icon from './Icon.astro';
+import SectionHead from './SectionHead.astro';
+import { openSource, links } from '../data/profile';
+---
+
+<section class="section" id="open-source" aria-labelledby="os-title">
+  <div class="container">
+    <SectionHead
+      id="os-title"
+      eyebrow="Open source"
+      title="Learning in public."
+      lede="Tutorials and tools I've shared with the NLP community."
+    />
+    <div class="repos">
+      {
+        openSource.map((r, i) => (
+          <a
+            class="repo panel spotlight"
+            href={`https://github.com/${r.repo}`}
+            target="_blank"
+            rel="noopener"
+            data-repo={r.repo}
+            data-reveal
+            style={`--delay: ${i * 80}ms`}
+          >
+            <div class="repo-top">
+              <Icon name="github" size={22} />
+              <span class="mono path">
+                {r.repo.split('/')[0]}/<strong>{r.name}</strong>
+              </span>
+              <Icon name="arrowUpRight" size={18} class="ext" />
+            </div>
+            <p>{r.description}</p>
+            <div class="repo-foot">
+              <div class="chips">
+                {r.tags.map((t) => (
+                  <span class="chip">{t}</span>
+                ))}
+              </div>
+              <div class="stats mono" data-stats hidden>
+                <span>
+                  <Icon name="star" size={14} /> <span data-stars />
+                </span>
+                <span>
+                  <Icon name="fork" size={14} /> <span data-forks />
+                </span>
+              </div>
+            </div>
+          </a>
+        ))
+      }
+    </div>
+    <a class="more" href={links.github} target="_blank" rel="noopener" data-reveal>
+      More on GitHub <Icon name="arrowUpRight" size={16} />
+    </a>
+  </div>
+</section>
+
+<script>
+  // Live star / fork counts; silently skipped if GitHub is unreachable or rate-limited.
+  document.querySelectorAll<HTMLElement>('[data-repo]').forEach(async (card) => {
+    try {
+      const res = await fetch(`https://api.github.com/repos/${card.dataset.repo}`);
+      if (!res.ok) return;
+      const data = await res.json();
+      const fmt = (n: number) => (n >= 1000 ? `${(n / 1000).toFixed(1).replace(/\.0$/, '')}k` : String(n));
+      card.querySelector('[data-stars]')!.textContent = fmt(data.stargazers_count);
+      card.querySelector('[data-forks]')!.textContent = fmt(data.forks_count);
+      card.querySelector<HTMLElement>('[data-stats]')!.hidden = false;
+    } catch {
+      /* offline or blocked — the card still works without numbers */
+    }
+  });
+</script>
+
+<style>
+  .repos {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
+  }
+  .repo {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 26px;
+    transition: border-color 0.3s, transform 0.3s var(--ease);
+  }
+  .repo:hover {
+    border-color: color-mix(in srgb, var(--accent) 45%, var(--border));
+    transform: translateY(-3px);
+  }
+  .repo-top {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .path {
+    font-size: 0.92rem;
+    color: var(--muted);
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .path strong {
+    color: var(--text);
+    font-weight: 500;
+  }
+  .repo :global(.ext) {
+    margin-left: auto;
+    color: var(--muted);
+    flex: none;
+    transition: color 0.2s, transform 0.3s var(--ease);
+  }
+  .repo:hover :global(.ext) {
+    color: var(--accent);
+    transform: translate(2px, -2px);
+  }
+  .repo p {
+    color: var(--text-2);
+  }
+  .repo-foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: auto;
+    flex-wrap: wrap;
+  }
+  .stats {
+    display: flex;
+    gap: 14px;
+    color: var(--text-2);
+  }
+  .stats > span {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .stats :global(svg) {
+    color: var(--accent);
+  }
+  .more {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 24px;
+    color: var(--text-2);
+    font-weight: 500;
+  }
+  .more:hover {
+    color: var(--accent);
+  }
+  @media (max-width: 760px) {
+    .repos {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
