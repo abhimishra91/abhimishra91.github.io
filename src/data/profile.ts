@@ -31,7 +31,7 @@ export const metrics = [
   { value: 12, prefix: '', suffix: '+', label: 'years shipping ML & AI to production' },
   { value: 1, prefix: 'USD ', suffix: 'M+', label: 'commercial impact from AI systems' },
   { value: 60, prefix: '~', suffix: '%', label: 'faster model deployment cycles' },
-  { value: 11, prefix: '', suffix: '+', label: 'data scientists & ML engineers led' },
+  { value: 11, prefix: '', suffix: '', label: 'data scientists & ML engineers led across 4 countries' },
   { value: 18, prefix: '', suffix: ' hrs', label: 'of manual work removed, every day' },
 ];
 
@@ -52,7 +52,7 @@ export const modes: {
     role: 'Engineering Manager',
     blurb: 'Build teams that own AI in production — not just notebooks.',
     points: [
-      'Scaled a team of 7+ data scientists and 4+ ML engineers',
+      'Led 7 data scientists and 4 ML engineers across Hong Kong, Singapore, India and the UK',
       'Hiring, mentoring and technical direction',
       'Roadmaps shaped with product, business and clients',
     ],
@@ -77,7 +77,7 @@ export const modes: {
     blurb: 'Sit with the user, turn ambiguity into a working system.',
     points: [
       'Translate fuzzy business problems into shipped AI',
-      'Client-facing analytics products across APAC finance',
+      'Direct engagement with financial clients across every region',
       'USD 1M+ in commercial impact from delivered systems',
     ],
   },
@@ -92,7 +92,7 @@ export const experience = [
     summary:
       'Leading a multi-disciplinary AI team and the platform it runs on.',
     highlights: [
-      'Led and scaled a team of 7+ data scientists and 4+ ML engineers — technical direction, architecture guidance, mentoring and production ownership.',
+      'Led and scaled a distributed team of 7 data scientists and 4 ML engineers across Hong Kong, Singapore, India and the UK — technical direction, architecture guidance, mentoring and production ownership across time zones.',
       'Built a unified Data & AI platform on Snowflake, AWS and Prefect covering experimentation, training, deployment, real-time inference, CI/CD, observability and governance.',
       'Architected an agentic conversational analytics platform (LangChain / LangGraph) that improved analyst productivity by ~30%.',
       'Set production engineering standards that cut deployment cycles by ~60% and aligned the AI roadmap to USD 1M+ in commercial impact.',
@@ -120,6 +120,7 @@ export const experience = [
     summary: 'Owned ML-powered analytics products for APAC financial clients.',
     highlights: [
       'Owned roadmap and delivery of a Big Data analytics platform for APAC financial clients, doubling adoption.',
+      'Worked directly with financial clients across all regions, with data-science delivery focused on APAC.',
       'Delivered forecasting and classification products that outperformed benchmarks by ~30%.',
       'Built data and ML systems on AWS (EMR, Glue, Redshift), cutting processing time by 40%.',
     ],

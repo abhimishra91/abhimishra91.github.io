@@ -38,7 +38,7 @@ Build a shared foundation that data scientists actually want to use, without slo
 
 - **Designed and built a unified Data & AI platform** on Snowflake, AWS and Prefect, covering experimentation, training, deployment, real-time inference, CI/CD, observability and governance.
 - **Established production engineering practices** — CI/CD for models, observability, model lifecycle management and reusable infrastructure — as defaults rather than afterthoughts.
-- **Led the data science and ML engineering team** that built and ran it, and set the standards teams adopted.
+- **Led the data science and ML engineering team** — 11 people across Hong Kong, Singapore, India and the UK — that built and ran it, and set the standards teams adopted.
 
 ## Outcome
 
