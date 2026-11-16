@@ -4,12 +4,12 @@
 export const site = {
   name: 'Abhishek Kumar Mishra',
   shortName: 'Abhishek',
-  title: 'Abhishek Kumar Mishra — Engineering Manager & AI Platform Leader',
+  title: 'Abhishek Kumar Mishra — Principal Forward Deployed Engineer, Atlassian',
   description:
-    'Engineering leader with 12+ years building production AI: agentic analytics, ML platforms and real-time inference at Collinson, OCBC and IHS Markit.',
+    'Principal Forward Deployed Engineer at Atlassian. 12+ years taking AI to production — agentic analytics, ML platforms and real-time inference at Collinson, OCBC and IHS Markit.',
   url: 'https://abhimishra91.github.io',
   location: 'Delhi NCR',
-  status: 'Open for collaboration',
+  status: 'Principal FDE at Atlassian',
   email: 'abhimishra.91@gmail.com',
   resume: '/Abhishek_Kumar_Mishra_Resume.pdf',
 };
@@ -21,10 +21,10 @@ export const links = {
 };
 
 export const hero = {
-  kicker: ['Engineering Manager', 'AI Platform Architect', 'Hands-on Builder'],
-  headline: ['I build production AI systems', '— and the teams that ship them.'],
+  kicker: ['Principal Forward Deployed Engineer', 'AI Platform Architect', 'Engineering Leader'],
+  headline: ['From pilot to production,', 'inside the customer’s team.'],
   intro:
-    'For 12+ years I have taken AI from whiteboard to production at Collinson, OCBC Bank and IHS Markit — leading teams, architecting platforms, and working shoulder-to-shoulder with the people who use them.',
+    'Principal Forward Deployed Engineer at Atlassian, working inside enterprise teams to take AI agents from pilot to production. Before that, 12+ years building AI platforms and leading teams at Collinson, OCBC Bank and IHS Markit.',
 };
 
 export const metrics = [
@@ -46,8 +46,21 @@ export const modes: {
   points: string[];
 }[] = [
   {
-    id: 'lead',
+    id: 'deploy',
     index: '01',
+    title: 'Deploy',
+    role: 'Principal FDE · Atlassian',
+    blurb: 'Embed with the customer, turn ambiguity into a working AI system.',
+    points: [
+      'Now embedding with enterprise teams to ship AI agents into production',
+      'Translate fuzzy business problems into shipped AI',
+      'Direct engagement with financial clients across every region',
+      'USD 1M+ in commercial impact from delivered systems',
+    ],
+  },
+  {
+    id: 'lead',
+    index: '02',
     title: 'Lead',
     role: 'Engineering Manager',
     blurb: 'Build teams that own AI in production — not just notebooks.',
@@ -59,7 +72,7 @@ export const modes: {
   },
   {
     id: 'architect',
-    index: '02',
+    index: '03',
     title: 'Architect',
     role: 'Staff+ Engineer',
     blurb: 'Design the platform once so every team ships faster after.',
@@ -69,28 +82,29 @@ export const modes: {
       'Batch + low-latency inference with Spark and Ray',
     ],
   },
-  {
-    id: 'deploy',
-    index: '03',
-    title: 'Deploy',
-    role: 'Forward-Deployed Engineer',
-    blurb: 'Sit with the user, turn ambiguity into a working system.',
-    points: [
-      'Translate fuzzy business problems into shipped AI',
-      'Direct engagement with financial clients across every region',
-      'USD 1M+ in commercial impact from delivered systems',
-    ],
-  },
 ];
 
 export const experience = [
   {
+    company: 'Atlassian',
+    role: 'Principal Forward Deployed Engineer',
+    period: 'Nov 2026 — Present',
+    place: 'Delhi NCR · Remote',
+    summary: 'Embedding with enterprise customers to take AI from pilot to production.',
+    highlights: [
+      'Work inside customer teams to design, build and deploy production AI — custom agents, automations and integrations on the Atlassian platform.',
+      'Own delivery end to end: discovery, architecture, retrieval and agent orchestration, evaluation, and rollout.',
+      'Bring patterns from the field back to Atlassian product and engineering teams.',
+    ],
+    work: [],
+  },
+  {
     company: 'Collinson Group',
     role: 'Manager, Data Science',
-    period: 'Jan 2023 — Present',
+    period: 'Jan 2023 — Oct 2026',
     place: 'Singapore · India',
     summary:
-      'Leading a multi-disciplinary AI team and the platform it runs on.',
+      'Led a multi-disciplinary AI team and the platform it runs on.',
     highlights: [
       'Led and scaled a distributed team of 7 data scientists and 4 ML engineers across Hong Kong, Singapore, India and the UK — technical direction, architecture guidance, mentoring and production ownership across time zones.',
       'Built a unified Data & AI platform on Snowflake, AWS and Prefect covering experimentation, training, deployment, real-time inference, CI/CD, observability and governance.',
